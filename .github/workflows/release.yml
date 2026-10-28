@@ -1,0 +1,93 @@
+name: Ins Hauptprojekt veröffentlichen
+
+# Wird vom Knopf „Ins Hauptprojekt veröffentlichen“ in der Entwickler-Version gestartet (oder von Hand unter Actions).
+# Es wird nur ein Commit auf main im Hauptprojekt angelegt. Einen Tag oder Release legst du danach selbst an.
+# Dafür muss im Entwickler-Repo das Geheimnis MAIN_REPO_TOKEN stehen (siehe README).
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Neue Version, z. B. 3.0.5.6"
+        required: true
+      changelog:
+        description: "Änderungen für den CHANGELOG"
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ inputs.version }}
+      CHANGELOG: ${{ inputs.changelog }}
+    steps:
+      - name: Entwickler-Repo holen
+        uses: actions/checkout@v4
+        with:
+          path: dev
+
+      - name: Hauptprojekt holen
+        uses: actions/checkout@v4
+        with:
+          repository: Maddog3010/ha-fenster-heizung
+          token: ${{ secrets.MAIN_REPO_TOKEN }}
+          path: main
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: 1 Prüfen
+        run: |
+          set -e
+          python3 - <<'PY'
+          import json, os, re, sys
+          v = os.environ["VERSION"].strip()
+          if not re.fullmatch(r"\d+(\.\d+){2,3}", v):
+              sys.exit("Version ungültig: " + v)
+          if not os.environ["CHANGELOG"].strip():
+              sys.exit("Änderungen fehlen")
+          old = json.load(open("main/custom_components/fenster_heizung/manifest.json"))["version"]
+          t = lambda x: tuple(int(i) for i in re.findall(r"\d+", x)[:4])
+          if t(v) <= t(old):
+              sys.exit(f"Die Version {v} muss höher sein als im Hauptprojekt ({old})")
+          print("Hauptprojekt:", old, "-> neu:", v)
+          PY
+          cd dev
+          python3 frontend-src/build.py --check
+          python3 -m compileall -q custom_components
+          if grep -rIEq "FHPRIV1-[A-Za-z0-9_-]{20,}|FHDEVPRIV1-[A-Za-z0-9_-]{20,}" --exclude-dir=.git .; then echo "Privater Schlüssel im Code!"; exit 1; fi
+
+      - name: 2 Bauen
+        run: |
+          set -e
+          printf '%s\n' "$CHANGELOG" > "$RUNNER_TEMP/changelog.md"
+          cd dev
+          python3 tools/release_build.py --out "$RUNNER_TEMP/out" --version "$VERSION" --changelog-file "$RUNNER_TEMP/changelog.md"
+          node --check "$RUNNER_TEMP/out/custom_components/fenster_heizung/frontend/panel.js"
+
+      - name: 3 Hochladen
+        run: |
+          set -e
+          OUT="$RUNNER_TEMP/out"
+          cd main
+          rm -rf custom_components/fenster_heizung frontend-src
+          mkdir -p custom_components
+          cp -r "$OUT/custom_components/fenster_heizung" custom_components/
+          cp -r "$OUT/frontend-src" .
+          for f in README.md CHANGELOG.md hacs.json FUNDING.yaml; do [ -f "$OUT/$f" ] && cp "$OUT/$f" . || true; done
+          find . -name __pycache__ -prune -exec rm -rf {} + 2>/dev/null || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && { echo "Keine Änderungen"; exit 1; }
+          FIRST=$(printf '%s\n' "$CHANGELOG" | grep -v '^#' | grep -v '^$' | head -1 | sed 's/^[-* ]*//' | cut -c1-80)
+          git commit -m "$VERSION: ${FIRST:-Neue Version}" -m "Aus der Entwickler-Version veröffentlicht."
+          git push origin HEAD:main

@@ -1,0 +1,150 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Raum einrichten",
+        "description": "Wähle die Fenstersensoren und Thermostate eines Raums. Pro Raum legst du einen Eintrag an.",
+        "data": {
+          "name": "Raumname",
+          "window_sensors": "Fenstersensoren",
+          "thermostats": "Heizungsthermostate",
+          "open_delay": "Verzögerung nach Öffnen (s)",
+          "close_delay": "Verzögerung nach Schließen (s)",
+          "action": "Aktion bei offenem Fenster",
+          "setback_temp": "Absenktemperatur (°C)",
+          "outdoor_sensor": "Außentemperatursensor (optional)",
+          "outdoor_max_temp": "Nur regeln, wenn draußen kälter als (°C)",
+          "block_from": "Sperrzeit von (optional)",
+          "block_to": "Sperrzeit bis (optional)",
+          "notify_service": "Benachrichtigungs-Aktionen (Auswahl wie in den Entwicklerwerkzeugen)",
+          "notify_after": "Erinnerung nach X Minuten offen (0 = aus)",
+          "heating_entity": "Heizungs-Sensor (optional)",
+          "heating_off_states": "Zustände für „Heizung aus“ (Komma getrennt)",
+          "heat_power_kw": "Feste Heizleistung des Raums (kW, nur ohne Raumfläche)",
+          "room_area": "Raumfläche für die Berechnung (m², 0 = feste Leistung)",
+          "heat_load_w_m2": "Spezifische Heizlast (W/m²)",
+          "design_temp": "Auslegungs-Außentemperatur (°C)",
+          "notify_title": "Titel der Benachrichtigung (optional)",
+          "notify_message": "Nachrichtentext",
+          "fuel": "Brennstoff",
+          "energy_per_unit": "Energie pro Einheit (kWh), leer = Standard des Brennstoffs",
+          "cop": "Jahresarbeitszahl JAZ / COP (nur Wärmepumpe)"
+        },
+        "data_description": {
+          "heating_entity": "Wähle eine Entität, die anzeigt, ob die Heizung läuft (z. B. ein climate-Gerät, Schalter oder Sommer-Modus). Hat sie einen der Zustände unten, wird nicht geregelt und nur die Fenstermeldung bleibt aktiv. Beispiel: off, oder bei einem Sommer-Schalter: on.",
+          "heat_power_kw": "Wird nur verwendet, wenn die Raumfläche unten 0 ist, und für ältere Tage vor Version 1.4.2. Grobe Schätzung der durchschnittlichen Heizleistung des Raums, z. B. 1,0 kW.",
+          "notify_service": "Wähle eine oder mehrere notify-Aktionen aus der Liste, z. B. notify.mobile_app_handy. Du kannst auch tippen, um zu suchen oder einen eigenen Namen einzugeben.",
+          "room_area": "Wenn größer als 0, wird die Heizleistung des Raums aus Fläche, Heizlast und Außentemperatur berechnet statt aus der festen Leistung oben.",
+          "heat_load_w_m2": "Heizlast pro m² bei Auslegungstemperatur. Richtwerte: Neubau etwa 40, saniert etwa 60, unsanierter Altbau etwa 100.",
+          "design_temp": "Norm-Außentemperatur deines Standorts, in Deutschland meist zwischen -10 und -16 °C. Ohne Außentemperatursensor wird pauschal mit halber Leistung gerechnet.",
+          "notify_message": "Text der Erinnerung, wie das Feld „Nachricht“ in den Entwicklerwerkzeugen. Platzhalter: {raum}, {minuten} und {fenster} (Namen der offenen Fenster).",
+          "notify_title": "Optionaler Titel. Dieselben Platzhalter sind möglich, z. B. Fenster offen: {raum}.",
+          "fuel": "Bestimmt Einheit und Beschriftung im Dashboard. Standardwerte: Erdgas 10 kWh/m³, Heizöl 10 kWh/l, Flüssiggas 6,6 kWh/l, Pellets 4,8 kWh/kg, Strom 1 kWh/kWh.",
+          "energy_per_unit": "Heizwert deines Brennstoffs pro Einheit (m³, l, kg oder kWh). Leer lassen oder 0 nimmt den Standard. Bei Erdgas steht der Wert auf deiner Gasrechnung (Brennwert mal Zustandszahl), meist etwa 10.",
+          "cop": "Nur bei Wärmepumpe: aus 1 kWh Strom werden etwa so viele kWh Wärme. Gespart wird Wärme geteilt durch diesen Wert. Mit 1 rechnest du wie bei einer Stromheizung."
+        }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Einstellungen",
+        "data": {
+          "window_sensors": "Fenstersensoren",
+          "thermostats": "Heizungsthermostate",
+          "open_delay": "Verzögerung nach Öffnen (s)",
+          "close_delay": "Verzögerung nach Schließen (s)",
+          "action": "Aktion bei offenem Fenster",
+          "setback_temp": "Absenktemperatur (°C)",
+          "outdoor_sensor": "Außentemperatursensor (optional)",
+          "outdoor_max_temp": "Nur regeln, wenn draußen kälter als (°C)",
+          "block_from": "Sperrzeit von (optional)",
+          "block_to": "Sperrzeit bis (optional)",
+          "notify_service": "Benachrichtigungs-Aktionen (Auswahl wie in den Entwicklerwerkzeugen)",
+          "notify_after": "Erinnerung nach X Minuten offen (0 = aus)",
+          "heating_entity": "Heizungs-Sensor (optional)",
+          "heating_off_states": "Zustände für „Heizung aus“ (Komma getrennt)",
+          "heat_power_kw": "Feste Heizleistung des Raums (kW, nur ohne Raumfläche)",
+          "room_area": "Raumfläche für die Berechnung (m², 0 = feste Leistung)",
+          "heat_load_w_m2": "Spezifische Heizlast (W/m²)",
+          "design_temp": "Auslegungs-Außentemperatur (°C)",
+          "notify_title": "Titel der Benachrichtigung (optional)",
+          "notify_message": "Nachrichtentext",
+          "fuel": "Brennstoff",
+          "energy_per_unit": "Energie pro Einheit (kWh), leer = Standard des Brennstoffs",
+          "cop": "Jahresarbeitszahl JAZ / COP (nur Wärmepumpe)"
+        },
+        "data_description": {
+          "heating_entity": "Wähle eine Entität, die anzeigt, ob die Heizung läuft (z. B. ein climate-Gerät, Schalter oder Sommer-Modus). Hat sie einen der Zustände unten, wird nicht geregelt und nur die Fenstermeldung bleibt aktiv. Beispiel: off, oder bei einem Sommer-Schalter: on.",
+          "heat_power_kw": "Wird nur verwendet, wenn die Raumfläche unten 0 ist, und für ältere Tage vor Version 1.4.2. Grobe Schätzung der durchschnittlichen Heizleistung des Raums, z. B. 1,0 kW.",
+          "notify_service": "Wähle eine oder mehrere notify-Aktionen aus der Liste, z. B. notify.mobile_app_handy. Du kannst auch tippen, um zu suchen oder einen eigenen Namen einzugeben.",
+          "room_area": "Wenn größer als 0, wird die Heizleistung des Raums aus Fläche, Heizlast und Außentemperatur berechnet statt aus der festen Leistung oben.",
+          "heat_load_w_m2": "Heizlast pro m² bei Auslegungstemperatur. Richtwerte: Neubau etwa 40, saniert etwa 60, unsanierter Altbau etwa 100.",
+          "design_temp": "Norm-Außentemperatur deines Standorts, in Deutschland meist zwischen -10 und -16 °C. Ohne Außentemperatursensor wird pauschal mit halber Leistung gerechnet.",
+          "notify_message": "Text der Erinnerung, wie das Feld „Nachricht“ in den Entwicklerwerkzeugen. Platzhalter: {raum}, {minuten} und {fenster} (Namen der offenen Fenster).",
+          "notify_title": "Optionaler Titel. Dieselben Platzhalter sind möglich, z. B. Fenster offen: {raum}.",
+          "fuel": "Bestimmt Einheit und Beschriftung im Dashboard. Standardwerte: Erdgas 10 kWh/m³, Heizöl 10 kWh/l, Flüssiggas 6,6 kWh/l, Pellets 4,8 kWh/kg, Strom 1 kWh/kWh.",
+          "energy_per_unit": "Heizwert deines Brennstoffs pro Einheit (m³, l, kg oder kWh). Leer lassen oder 0 nimmt den Standard. Bei Erdgas steht der Wert auf deiner Gasrechnung (Brennwert mal Zustandszahl), meist etwa 10.",
+          "cop": "Nur bei Wärmepumpe: aus 1 kWh Strom werden etwa so viele kWh Wärme. Gespart wird Wärme geteilt durch diesen Wert. Mit 1 rechnest du wie bei einer Stromheizung."
+        }
+      }
+    }
+  },
+  "selector": {
+    "action": {
+      "options": {
+        "off": "Thermostat ausschalten",
+        "setback": "Auf Absenktemperatur stellen"
+      }
+    },
+    "fuel": {
+      "options": {
+        "erdgas": "Erdgas (m³)",
+        "heizoel": "Heizöl (l)",
+        "fluessiggas": "Flüssiggas (l)",
+        "pellets": "Pellets (kg)",
+        "strom": "Wärmepumpe / Strom (kWh)"
+      }
+    }
+  },
+  "entity": {
+    "switch": {
+      "enabled": {
+        "name": "Fensterregelung aktiv"
+      },
+      "plan_enabled": {
+        "name": "Heizplan aktiv"
+      },
+      "heater_enabled": {
+        "name": "Elektroheizer aktiv"
+      }
+    },
+    "sensor": {
+      "minutes_today": {
+        "name": "Heizung pausiert heute"
+      },
+      "mode": {
+        "name": "Betriebszustand",
+        "state": {
+          "regelung_aktiv": "Regelung aktiv",
+          "heizung_pausiert": "Heizung pausiert",
+          "nur_fenstermeldung": "Heizung aus, nur Fenstermeldung",
+          "regelung_aus": "Regelung deaktiviert"
+        }
+      },
+      "minutes_month": {
+        "name": "Heizung pausiert im Monat"
+      },
+      "minutes_year": {
+        "name": "Heizung pausiert im Jahr"
+      },
+      "minutes_total": {
+        "name": "Heizung pausiert gesamt"
+      },
+      "plan_target": {
+        "name": "Heizplan Solltemperatur"
+      }
+    }
+  }
+}

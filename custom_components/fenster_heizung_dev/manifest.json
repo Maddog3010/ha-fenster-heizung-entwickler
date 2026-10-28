@@ -1,0 +1,20 @@
+{
+  "domain": "fenster_heizung_dev",
+  "name": "Strom & Wärme Entwickler",
+  "codeowners": [
+    "@Maddog3010"
+  ],
+  "config_flow": true,
+  "dependencies": [
+    "frontend",
+    "http",
+    "panel_custom",
+    "websocket_api"
+  ],
+  "documentation": "https://github.com/Maddog3010/ha-fenster-heizung-entwickler",
+  "integration_type": "service",
+  "iot_class": "local_push",
+  "issue_tracker": "https://github.com/Maddog3010/ha-fenster-heizung-entwickler/issues",
+  "requirements": [],
+  "version": "3.0.5.5"
+}
