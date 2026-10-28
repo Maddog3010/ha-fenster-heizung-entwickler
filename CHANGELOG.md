@@ -1,5 +1,8 @@
 # Changelog (Entwickler-Version)
 
+## [3.0.6.1-dev] - 2026-10-28
+- Stand von Strom & Wärme 3.0.6.1 übernommen (Banner-Symbol bei Alarm).
+
 ## [3.0.6.0-dev] - 2026-10-28
 - Stand von Strom & Wärme 3.0.6.0 übernommen (Modul 11 Beta: Grundriss-Baukasten, Wartung, Abfahrt-Prüfung).
 
