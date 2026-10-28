@@ -1,5 +1,8 @@
 # Changelog (Entwickler-Version)
 
+## [3.0.6.0-dev] - 2026-10-28
+- Stand von Strom & Wärme 3.0.6.0 übernommen (Modul 11 Beta: Grundriss-Baukasten, Wartung, Abfahrt-Prüfung).
+
 ## [3.0.5.6-dev] - 2026-10-28
 - Stand von Strom & Wärme 3.0.5.6 übernommen (Sponsor-Hinweis zur E-Mail).
 
